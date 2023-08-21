@@ -14,6 +14,18 @@ class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const localContacts = JSON.parse(localStorage.getItem('contacts'));
+    if (localContacts?.length > 0) {
+      this.setState({ contacts: localContacts });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts.length !== this.state.contacts.length) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   createContact = data => {
     if (this.isDuplicate(data.name))
       return alert(`${data.name} is already in contacts(( `);
